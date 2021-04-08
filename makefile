@@ -19,4 +19,4 @@ $(EXEC): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(CFLAGES)
 
 clean:
-	rm -rf $(OUTPUT)
+	rm -rf $(EXEC) $(OBJS)
