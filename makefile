@@ -1,14 +1,6 @@
-SRC = main.cpp
-EXEC = main
-ifeq ($(SRC),)
-  $(error No source files specified)
-endif
-
-ifeq ($(EXEC),)
-  $(error No executable file specified)
-endif
-
 BUILD_ROOT = ./
+SRC = $(BUILD_ROOT)/src
+EXEC = test
 
 ARCH="`uname -m`"
 CC = gcc
@@ -17,11 +9,15 @@ CFLAGES = -O3
 CPPFLAGES += -I$(BUILD_ROOT)/include -I.
 LDFLAGES += -L$(BUILD_ROOT)/lib
 
-OBJS += $(SRC:%.c=%.o)
-
 ifeq ($(ARCH), armv7l)
 	LDFLAGES += -llibgtest_armv7
 endif
+
+FILES += $(foreach d, $(SRC), $(wildcard $(d)/*.cpp))
+FILES += $(foreach d, $(SRC), $(wildcard $(d)/*.c))
+OBJS += $(patsubst %.cpp, %.o, $(FILES))
+OBJS += $(patsubst %.c, %.o, $(FILES))
+
 
 .PHONY: all
 
