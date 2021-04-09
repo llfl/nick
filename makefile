@@ -14,6 +14,8 @@ ifeq ($(ARCH), armv7l)
 	LDFLAGS += -lgtest_armv7
 else ifeq ($(ARCH), aarch64)
 	LDFLAGS += -lgtest_aarch64
+else ifeq ($(ARCH), x86_64)
+	LDFLAGS += -lgtest_amd64
 endif
 LDFLAGS += -lpthread
 
