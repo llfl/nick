@@ -10,8 +10,7 @@ CPPFLAGS += -g -O3 -fPIC
 LDFLAGS += -I$(BUILD_ROOT)/include -I.
 LDFLAGS += -L$(BUILD_ROOT)/lib
 
-LDFLAGS += -lgtest_armv7
-ifeq ($(ARCH), armv7l)
+ifeq ($(ARCH), "armv7l")
 	@echo 'We get armv7'
 	LDFLAGS += -lgtest_armv7
 endif
