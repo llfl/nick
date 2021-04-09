@@ -34,8 +34,6 @@ int16_t* matrix_mul_neon(const int16_t *aa,
         memcpy(c, cc+i*dim, sizeof(int16_t)*dim);
     }
     free(c);
-    free(b);
-    free(a);
     return cc;
 }
 #endif
