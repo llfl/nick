@@ -4,8 +4,8 @@
 #include "mm4x4.h"
 #include<stdlib.h>
 
-#define W_INDEX 1
 #define H_INDEX 0
+#define W_INDEX 1
 
 template <typename T>
 T* gemm(
