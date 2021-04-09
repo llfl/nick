@@ -21,7 +21,6 @@ int16_t* matrix_mul_neon(const int16_t *aa,
 {
     int16x4_t _aa;
     int16x4_t _bb;
-    int16x4_t _cc;
     int16_t* cc = (int16_t*) malloc(sizeof(int16_t)*dim*dim);
     int16_t* b = (int16_t*) malloc(sizeof(int16_t)*dim);
     int16_t* a = (int16_t*) malloc(sizeof(int16_t)*dim);
@@ -33,8 +32,7 @@ int16_t* matrix_mul_neon(const int16_t *aa,
         b = (int16_t*)(bb+i*dim);
         _aa = vld1_s16(a);
         _bb = vld1_s16(b);
-        _cc = vmul_s16(_aa, _bb);
-        vst1_s16(c, _cc);
+        vst1_s16(c, vmul_s16(_aa, _bb));
         memcpy(cc+i*dim, c, sizeof(int16_t)*dim);
     }
     free(c);
