@@ -1,5 +1,5 @@
-SRC = sample1_unittest.cpp
-EXEC = sample1
+SRC = main.cpp
+EXEC = main
 ifeq ($(SRC),)
   $(error No source files specified)
 endif
