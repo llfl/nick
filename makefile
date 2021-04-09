@@ -32,6 +32,8 @@ OBJS += $(patsubst %.c, %.o, $(CFILES))
 
 all: build run
 
+rebuild: clean build run
+
 build: $(EXEC)
 
 %.o: %.c
