@@ -1,7 +1,7 @@
 #ifndef MAT4X4_H_
 #define MAT4X4_H_
 
-#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #ifdef __aarch64__
