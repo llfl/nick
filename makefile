@@ -23,7 +23,7 @@ OBJS += $(patsubst %.c, %.o, $(CFILES))
 
 .PHONY: all
 
-all: build
+all: build run
 
 build: $(EXEC)
 
@@ -35,6 +35,9 @@ build: $(EXEC)
 
 $(EXEC): $(OBJS)
 	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+
+run: build
+	$(EXEC)
 
 clean:
 	rm -rf $(EXEC) $(OBJS)
