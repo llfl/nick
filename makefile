@@ -1,22 +1,50 @@
-SRC = mul4x4.c 
-EXEC = mul4x4
+BUILD_ROOT = .
+SRC = $(BUILD_ROOT)/src
+EXEC = test
 
+ARCH=$(shell uname -m)
 CC = gcc
-CFLAGES = -O3
+CXX = g++
+CFLAGS += -g -O3
+CPPFLAGS += -g -O3 -fPIC
+LDFLAGS += -I$(BUILD_ROOT)/include -I.
+LDFLAGS += -L$(BUILD_ROOT)/lib
 
-OBJS += $(SRC:%.c=%.o)
+ifeq ($(ARCH), armv7l)
+	LDFLAGS += -lgtest_armv7
+	CPPFLAGS += -D__armv7__
+else ifeq ($(ARCH), aarch64)
+	LDFLAGS += -lgtest_aarch64
+	CPPFLAGS += -D__aarch64__
+else ifeq ($(ARCH), x86_64)
+	LDFLAGS += -lgtest_amd64
+	CPPFLAGS += -D__x86_64__
+endif
+LDFLAGS += -lpthread
+
+CPPFILES += $(foreach d, $(SRC), $(wildcard $(d)/*.cpp))
+CFILES += $(foreach d, $(SRC), $(wildcard $(d)/*.c))
+OBJS += $(patsubst %.cpp, %.o, $(CPPFILES))
+OBJS += $(patsubst %.c, %.o, $(CFILES))
+
 
 .PHONY: all
 
-all: build
+all: build run
 
 build: $(EXEC)
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CXX) -c $(CPPFLAGS) -o $@ $(LDFLAGS) $<
+
+%.o: %.cpp
+	$(CXX) -c $(CPPFLAGS) -o $@ $(LDFLAGS) $<
 
 $(EXEC): $(OBJS)
-	$(CC) $(OBJS) -o $@ $(CFLAGES)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+
+run: build
+	$(BUILD_ROOT)/$(EXEC)
 
 clean:
 	rm -rf $(EXEC) $(OBJS)
