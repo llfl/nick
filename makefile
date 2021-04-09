@@ -5,8 +5,8 @@ EXEC = test
 ARCH=$(shell uname -m)
 CC = gcc
 CXX = g++
-CFLAGS += -g -O3
-CPPFLAGS += -g -O3 -fPIC
+CFLAGS += -g -O0
+CPPFLAGS += -g -O0 -fPIC
 LDFLAGS += -I$(BUILD_ROOT)/include -I.
 LDFLAGS += -L$(BUILD_ROOT)/lib
 
