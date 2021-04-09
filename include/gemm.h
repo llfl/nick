@@ -19,7 +19,10 @@ T* gemm(
     for(int i = 0; i < Ashape[H_INDEX]; i += 4){
         for(int j = 0; j < Bshape[W_INDEX]; j += 4){
             for(int k=0; k < Bshape[H_INDEX]; j += 4){
-                mm4x4<T>(A+i*Bshape[H_INDEX]/4+j,B+i*Bshape[H_INDEX]/4+k,out+k*Bshape[H_INDEX]/4+j);
+                mm4x4<T>(
+                    (T*)(A+i*Bshape[H_INDEX]/4+j),
+                    (T*)(B+i*Bshape[H_INDEX]/4+k),
+                    (T*)(out+k*Bshape[H_INDEX]/4+j));
             }
         }
     }
