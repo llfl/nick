@@ -26,10 +26,10 @@ int16_t* matrix_mul_neon(const int16_t *aa,
     int16_t* cc = (int16_t*) malloc(sizeof(int16_t)*dim*dim);
     for (int i = 0; i < dim; i++)
     {
-        _aa = vld1_s16(aa[i*dim]);
-        _bb = vld1_s16(bb[i*dim]);
+        _aa = vld1_s16(*aa+i*dim);
+        _bb = vld1_s16(*bb+i*dim);
         _cc = vmul_s16(_aa, _bb);
-        vst1_s16(cc[i*dim], _cc);
+        vst1_s16(*cc+i*dim, _cc);
     }
     return cc;
 }
