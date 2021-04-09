@@ -5,12 +5,12 @@ EXEC = test
 ARCH="`uname -m`"
 CC = gcc
 CXX = g++
-CFLAGES += -I$(BUILD_ROOT)/include -I.
-CPPFLAGES += -I$(BUILD_ROOT)/include -I.
-LDFLAGES += -L$(BUILD_ROOT)/lib
+CFLAGS += -I$(BUILD_ROOT)/include -I.
+CPPFLAGS += -I$(BUILD_ROOT)/include -I.
+LDFLAGS += -L$(BUILD_ROOT)/lib
 
 ifeq ($(ARCH), armv7l)
-	LDFLAGES += -llibgtest_armv7
+	LDFLAGS += -llibgtest_armv7
 endif
 
 FILES += $(foreach d, $(SRC), $(wildcard $(d)/*.cpp))
@@ -32,7 +32,7 @@ build: $(EXEC)
 	$(CXX) -c $(CPPFLAGS) -o $@ $(LDFLAGS) $<
 
 $(EXEC): $(OBJS)
-	$(CXX) -c $(CPPFLAGS) $(OBJS) -o $@ $(LDFLAGS)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
 
 clean:
 	rm -rf $(EXEC) $(OBJS)
