@@ -12,10 +12,13 @@ LDFLAGS += -L$(BUILD_ROOT)/lib
 
 ifeq ($(ARCH), armv7l)
 	LDFLAGS += -lgtest_armv7
+	CPPFLAGS += -D__armv7__
 else ifeq ($(ARCH), aarch64)
 	LDFLAGS += -lgtest_aarch64
+	CPPFLAGS += -D__aarch64__
 else ifeq ($(ARCH), x86_64)
 	LDFLAGS += -lgtest_amd64
+	CPPFLAGS += -D__x86_64__
 endif
 LDFLAGS += -lpthread
 
