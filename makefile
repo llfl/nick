@@ -14,10 +14,10 @@ ifeq ($(ARCH), armv7l)
 	LDFLAGS += -llibgtest_armv7
 endif
 
-# FILES += $(foreach d, $(SRC), $(wildcard $(d)/*.cpp))
+FILES += $(foreach d, $(SRC), $(wildcard $(d)/*.cpp))
 FILES += $(foreach d, $(SRC), $(wildcard $(d)/*.c))
-OBJS += $(patsubst %.cpp, %.o, $(FILES))
-OBJS += $(patsubst %.c, %.o, $(FILES))
+OBJS += $($(FILES):%.cpp=%.o)
+OBJS += $($(FILES):%.c=%.o)
 
 
 .PHONY: all
