@@ -1,4 +1,4 @@
-BUILD_ROOT = ./
+BUILD_ROOT = .
 SRC = $(BUILD_ROOT)/src
 EXEC = test
 
