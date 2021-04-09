@@ -11,7 +11,7 @@ LDFLAGS += -I$(BUILD_ROOT)/include -I.
 LDFLAGS += -L$(BUILD_ROOT)/lib
 
 ifeq ($(ARCH), armv7l)
-	@echo "We get armv7"
+	$(info "We Got armv7!")
 	LDFLAGS += -lgtest_armv7
 endif
 LDFLAGS += -lpthread
