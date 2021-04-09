@@ -5,7 +5,7 @@ EXEC = test
 ARCH="`uname -m`"
 CC = gcc
 CXX = g++
-CFLAGES = -O3
+CFLAGES = -I$(BUILD_ROOT)/include -I.
 CPPFLAGES += -I$(BUILD_ROOT)/include -I.
 LDFLAGES += -L$(BUILD_ROOT)/lib
 
