@@ -13,7 +13,7 @@ int16_t* matrix_mul_c(const int16_t *aa,
     }
     return cc;
 }
-#ifdef __aarch64__
+
 int16_t* matrix_mul_neon(const int16_t *aa, 
                     const int16_t *bb, 
                     const int16_t dim)
@@ -32,4 +32,3 @@ int16_t* matrix_mul_neon(const int16_t *aa,
     }
     return cc;
 }
-#endif
