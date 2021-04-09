@@ -26,7 +26,7 @@ all: build
 build: $(EXEC)
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) -o $@ $(LDFLAGS)$<
+	$(CC) -c $(CFLAGS) -o $@ $(LDFLAGS) $<
 
 %.o: %.cpp
 	$(CXX) -c $(CPPFLAGS) -o $@ $(LDFLAGS) $<
