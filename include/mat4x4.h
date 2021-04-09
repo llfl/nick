@@ -1,7 +1,7 @@
 #ifndef MAT4X4_H_
 #define MAT4X4_H_
 
-#include <stdlib.h>
+#include <stdio.h>
 
 #ifdef __aarch64__
 #include <arm_neon.h>
