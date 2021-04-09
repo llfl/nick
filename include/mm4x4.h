@@ -2,7 +2,8 @@
 #define MM4X4_H_
 
 #include <stdlib.h>
-template<template T>
+
+template<typename T>
 void mm4x4(
     const T *A,
     const T *B,
