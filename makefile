@@ -36,7 +36,7 @@ build: $(EXEC)
 $(EXEC): $(OBJS)
 	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
 
-run: 
+run: build
 	$(BUILD_ROOT)/$(EXEC)
 
 clean:
