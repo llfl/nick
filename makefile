@@ -37,7 +37,7 @@ $(EXEC): $(OBJS)
 	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
 
 run: 
-	$(EXEC)
+	$(BUILD_ROOT)/$(EXEC)
 
 clean:
 	rm -rf $(EXEC) $(OBJS)
