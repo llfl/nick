@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 
+// 4x4 矩阵乘
 template <typename T>
 void mm4x4(
     const T *A,
@@ -17,4 +18,5 @@ void mm4x4(
         }
     }
 }
+
 #endif
