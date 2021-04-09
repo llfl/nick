@@ -24,9 +24,9 @@ T* gemm(
         for(int j = 0; j < N; j++){
             for(int k=0; k < K; k++){
                 mm4x4<T>(
-                    (T*)(A+(i*K+k)*16),
-                    (T*)(B+(k*N+j)*16),
-                    (T*)(out+(i*N+j)*16));
+                    (T*)(A+(i*K*4+k)*16),
+                    (T*)(B+(k*N*4+j)*16),
+                    (T*)(out+(i*N*4+j)*16));
             }
         }
     }
