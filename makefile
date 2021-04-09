@@ -16,8 +16,8 @@ endif
 
 FILES += $(foreach d, $(SRC), $(wildcard $(d)/*.cpp))
 FILES += $(foreach d, $(SRC), $(wildcard $(d)/*.c))
-OBJS += $($(FILES):%.cpp=%.o)
-OBJS += $($(FILES):%.c=%.o)
+OBJS = $(patsubst %.cpp, %.o, $(FILES))
+OBJS = $(patsubst %.c, %.o, $(OBJS))
 
 
 .PHONY: all
