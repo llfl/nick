@@ -2,6 +2,7 @@
 #define MM4X4_H_
 
 #include <stdlib.h>
+#include <string.h>
 
 template <typename T>
 void mm4x4(
