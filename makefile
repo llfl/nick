@@ -5,8 +5,9 @@ EXEC = test
 ARCH="`uname -m`"
 CC = gcc
 CXX = g++
-CFLAGS += -I$(BUILD_ROOT)/include -I.
-CPPFLAGS += -I$(BUILD_ROOT)/include -I.
+CFLAGS += -g -O3
+CPPFLAGS += -g -O3
+LDFLAGS += -I$(BUILD_ROOT)/include -I.
 LDFLAGS += -L$(BUILD_ROOT)/lib
 
 ifeq ($(ARCH), armv7l)
