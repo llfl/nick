@@ -1,7 +1,7 @@
 #include "mm4x4.h"
 
 // 4x4 矩阵乘
-template<template T>
+template <typename T>
 void mm4x4(
     const T *A,
     const T *B,
