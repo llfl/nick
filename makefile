@@ -2,7 +2,7 @@ BUILD_ROOT = .
 SRC = $(BUILD_ROOT)/src
 EXEC = test
 
-ARCH="`uname -m`"
+ARCH=$(shell uname -m)
 CC = gcc
 CXX = g++
 CFLAGS += -g -O3
@@ -10,7 +10,7 @@ CPPFLAGS += -g -O3 -fPIC
 LDFLAGS += -I$(BUILD_ROOT)/include -I.
 LDFLAGS += -L$(BUILD_ROOT)/lib
 
-ifeq ($(ARCH), "armv7l")
+ifeq ($(ARCH), armv7l)
 	@echo 'We get armv7'
 	LDFLAGS += -lgtest_armv7
 endif
