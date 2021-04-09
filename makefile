@@ -9,10 +9,10 @@ CFLAGS += -g -O3
 CPPFLAGS += -g -O3
 LDFLAGS += -I$(BUILD_ROOT)/include -I.
 LDFLAGS += -L$(BUILD_ROOT)/lib
-LDFLAGS += -llibgtest_armv7
+LDFLAGS += -lgtest_armv7
 ifeq ($(ARCH), armv7l)
 	@echo 'We get armv7'
-	LDFLAGS += -llibgtest_armv7
+	LDFLAGS += -lgtest_armv7
 endif
 
 CPPFILES += $(foreach d, $(SRC), $(wildcard $(d)/*.cpp))
