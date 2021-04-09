@@ -14,7 +14,7 @@ void mm4x4(
         for (int j = 0; j < 4; j++)
         {
             for (int k = 0; k < 4; k++){
-                C[i+j*4] += A[i+k*4] * B[k+j*4];
+                C[i*4+j] += A[i*4+k] * B[k*4+j];
             }
             
         }
