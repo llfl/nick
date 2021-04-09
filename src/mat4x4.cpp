@@ -31,8 +31,8 @@ int16_t* matrix_mul_neon(const int16_t *aa,
 
     for (int i = 0; i < dim; i++)
     {
-        memcpy(&aa[i*dim], a, sizeof(int16_t)*dim);
-        memcpy(&bb[i*dim], b, sizeof(int16_t)*dim);
+        memcpy((int16_t*)aa[i*dim], a, sizeof(int16_t)*dim);
+        memcpy((int16_t*)bb[i*dim], b, sizeof(int16_t)*dim);
         _aa = vld1_s16(a);
         _bb = vld1_s16(b);
         _cc = vmul_s16(_aa, _bb);
