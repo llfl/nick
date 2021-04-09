@@ -30,7 +30,7 @@ int16_t* matrix_mul_neon(const int16_t *aa,
 
     for (int16_t i = 0; i < dim; i++)
     {
-        memset(a,0,sizeof(int16_t)*dim);
+        memset(a,1,sizeof(int16_t)*dim);
         memset(b,0,sizeof(int16_t)*dim);
         memset(c,0,sizeof(int16_t)*dim);
         memcpy(a, (int16_t*)aa[i*dim], sizeof(int16_t)*dim);
