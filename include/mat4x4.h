@@ -2,6 +2,7 @@
 #define MAT4X4_H_
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #ifdef __aarch64__

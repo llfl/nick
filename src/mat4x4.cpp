@@ -25,6 +25,7 @@ int16_t* matrix_mul_neon(const int16_t *aa,
     int16x4_t _cc;
     int16_t* cc = (int16_t*) malloc(sizeof(int16_t)*dim*dim);
     int16_t* c = (int16_t*) malloc(sizeof(int16_t)*dim);
+    printf("hello");
     for (int i = 0; i < dim; i++)
     {
         _aa = vld1_s16((int16_t*)aa[i*dim]);
