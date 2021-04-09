@@ -32,7 +32,7 @@ build: $(EXEC)
 	$(CXX) -c $(CPPFLAGS) -o $@ $(LDFLAGS) $<
 
 $(EXEC): $(OBJS)
-	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+	$(CXX) -c $(CPPFLAGS) $(OBJS) -o $@ $(LDFLAGS)
 
 clean:
 	rm -rf $(EXEC) $(OBJS)
