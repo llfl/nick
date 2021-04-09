@@ -6,7 +6,7 @@ ARCH="`uname -m`"
 CC = gcc
 CXX = g++
 CFLAGS += -g -O3
-CPPFLAGS += -g -O3
+CPPFLAGS += -g -O3 -fPIC
 LDFLAGS += -I$(BUILD_ROOT)/include -I.
 LDFLAGS += -L$(BUILD_ROOT)/lib
 LDFLAGS += -lpthread
@@ -29,7 +29,7 @@ all: build
 build: $(EXEC)
 
 %.o: %.c
-	$(CXX) -c $(CFLAGS) -o $@ $(LDFLAGS) $<
+	$(CXX) -c $(CPPFLAGS) -o $@ $(LDFLAGS) $<
 
 %.o: %.cpp
 	$(CXX) -c $(CPPFLAGS) -o $@ $(LDFLAGS) $<
