@@ -17,16 +17,13 @@ T* gemm(
     T* out = (T*)malloc(sizeof(T)*Ashape[H_INDEX]*Bshape[W_INDEX]);
     memset(out,0,sizeof(T)*Ashape[H_INDEX]*Bshape[W_INDEX]);
 
-    int M = Ashape[H_INDEX] / 4;
-    int N = Bshape[W_INDEX] / 4;
-    int K = Bshape[H_INDEX] / 4;
-    for(int i = 0; i < M; i++){
-        for(int j = 0; j < N; j++){
-            for(int k=0; k < K; k++){
+    for(int i = 0; i < Ashape[H_INDEX]; i += 4){
+        for(int j = 0; j < Bshape[W_INDEX]; j += 4){
+            for(int k=0; k < Bshape[H_INDEX]; k += 4){
                 mm4x4<T>(
-                    (T*)(A+(i*K*4+k)*4),
-                    (T*)(B+(k*N*4+j)*4),
-                    (T*)(out+(i*N*4+j)*4));
+                    (T*)(A+i*Bshape[H_INDEX]+k),
+                    (T*)(B+k*Bshape[W_INDEX]+j),
+                    (T*)(out+i*Bshape[W_INDEX]+j));
             }
         }
     }
