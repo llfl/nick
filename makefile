@@ -12,7 +12,7 @@ LDFLAGS += -L$(BUILD_ROOT)/lib
 
 ifeq ($(ARCH), armv7l)
 	LDFLAGS += -lgtest_armv7
-ifeq ($(ARCH), aarch64)
+else ifeq ($(ARCH), aarch64)
 	LDFLAGS += -lgtest_aarch64
 endif
 LDFLAGS += -lpthread
