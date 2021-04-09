@@ -11,5 +11,6 @@ int16_t* matrix_mul_c(const int16_t *aa,
             cc[i*dim + j] = aa[i*dim + j] * bb[i*dim + j];
         }
     }
+    return cc;
 
 }
