@@ -13,7 +13,7 @@ void mm4x4(
     {
         for (int j = 0; j < 4; j++)
         {
-            C[i+j*4] += A[i+j*4] * B[j+i*4];
+            C[j+i*4] += A[j+i*4] * B[i+j*4];
         }
     }
 }
