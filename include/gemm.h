@@ -32,7 +32,7 @@ T* gemm(
                     (T*)(out+ i   *Bshape[W_INDEX]+j),
                     (T*)(out+(i+1)*Bshape[W_INDEX]+j),
                     (T*)(out+(i+2)*Bshape[W_INDEX]+j),
-                    (T*)(out+(i+3)*Bshape[W_INDEX]+j),);
+                    (T*)(out+(i+3)*Bshape[W_INDEX]+j));
             }
         }
     }
