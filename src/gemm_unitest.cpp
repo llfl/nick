@@ -157,6 +157,43 @@ namespace
         free(r);
     }
 
+    TEST(gemmTest, mm_4x8_8x4){
+        int16_t aa[4][8] = {
+            {1, 2, -3, 4, 19, 4,24,-14},
+            {5, 6, 7, 8, 7,9,16,8},
+            {3, 6, 8, 1, 6,5,4,1},
+            {2, -6, 7, 1, 9,1,3,2}
+        };
+        int16_t bb[8][4] = {
+            {1, 2, -3, 4},
+            {5, 6, 7, 8},
+            {3, 6, 8, 1},
+            {2, -6, 7, 1},
+            {19, 4,24,-14},
+            {7,9,16,8},
+            {6,5,4,1},
+            {9,1,3,2}
+        };
+        int16_t c[4][4] = {
+            {417, 190, 589, -217},
+            {436, 237, 539, 89},
+            {241, 174, 347, 31},
+            {209, 66,  265, -143}
+        };
+
+        int16_t *cc = (int16_t *)c;
+        int asize[2] = {4,8};
+        int bsize[2] = {8,4};
+
+        int16_t *r = gemm<int16_t>((int16_t *)aa,(int16_t *)bb, asize,bsize);
+        for(int i = 0; i < asize[0]; i++) {
+            for(int j = 0; j < bsize[1]; j++) {
+                EXPECT_EQ(r[i*bsize[1]+j], cc[i*bsize[1]+j]);
+            }
+        }
+        free(r);
+    }
+
     TEST(gemmTest, rand_4x4_4x4){
         int size[2] = {4,4};
         int16_t *a = matrix<int16_t>(size);
