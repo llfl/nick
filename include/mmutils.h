@@ -13,7 +13,7 @@ T* matrix(int* shape){
     T* out = (T*)malloc(sizeof(T)*total);
     srand((unsigned)time(NULL) + (unsigned)rand());
     for(int i = 0; i< total; i++){
-        out[i] = (T)(rand()%100);
+        out[i] = (T)(rand()%200-100);
     }
     return out;
 }
