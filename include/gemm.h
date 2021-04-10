@@ -23,8 +23,7 @@ T* gemm(
                 mm4x4<T>(
                     (T*)(A+i*Bshape[H_INDEX]+k),
                     (T*)(B+k*Bshape[W_INDEX]+j),
-                    (T*)(out+i*Bshape[W_INDEX]+j),
-                    i*Bshape[W_INDEX]+j);
+                    (T*)(out+i*Bshape[W_INDEX]+j));
             }
         }
     }

@@ -29,7 +29,7 @@ namespace
 
         int16_t *r = (int16_t*) malloc(sizeof(int16_t)*16);
         memset(r,0,sizeof(int16_t)*16);
-        mm4x4<int16_t>((int16_t *)aa,(int16_t *)bb, r, 0);
+        mm4x4<int16_t>((int16_t *)aa,(int16_t *)bb, r);
         for(int i = 0; i < dim; i++) {
             for(int j = 0; j < dim; j++) {
                 EXPECT_EQ(r[i*dim+j], cc[i*dim+j]);
