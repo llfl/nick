@@ -5,6 +5,39 @@
 
 namespace 
 {
+    TEST(mmutilTest, mm_4x4_4x4){
+        int16_t aa[8][4] = {
+            {1, 2, -3, 4},
+            {5, 6, 7, 8},
+            {3, 6, 8, 1},
+            {2, -6, 7, 1}
+        };
+        int16_t bb[4][4] = {
+            {1, 3, 5, -7},
+            {2, 4, 6, 8},
+            {2, 5, 7, 9},
+            {5, 2, 7, 1}
+        };
+        int16_t c[8][4] = {
+            {19, 4,24,-14},
+            {71,90,166,84},
+            {36,75,114,100},
+            {9,19,30,2}
+        };
+
+        int16_t *cc = (int16_t *)c;
+        int asize[2] = {4,4};
+        int bsize[2] = {4,4};
+
+        int16_t *r = mm<int16_t>((int16_t *)aa,(int16_t *)bb, asize,bsize);
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++) {
+                EXPECT_EQ(r[i*4+j], cc[i*4+j]);
+            }
+        }
+        free(r);
+    }
+
     TEST(mmutilTest, mm_8x4_4x4){
         int16_t aa[8][4] = {
             {1, 2, -3, 4},
