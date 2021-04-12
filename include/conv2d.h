@@ -95,8 +95,6 @@ void conv2d(
         vgemm(col+(c-1)*col_size[W_INDEX]*col_size[H_INDEX], kernel, col_size, ksize, ocol);
     }
 
-
-
 }
 
 #endif
