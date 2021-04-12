@@ -3,6 +3,7 @@
 
 #include "global_para.h"
 #include<stdlib.h>
+#include<string.h>
 
 template <typename T>
 void im2col(
