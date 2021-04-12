@@ -26,7 +26,7 @@ void im2col(
     int kmiddle_j = kshape[W_INDEX] / 2;
     int offset_i = kmiddle_i - padding[P_TOP];
     int offset_j = kmiddle_j - padding[P_RIGHT];
-    int oline = 0
+    int oline = 0;
 
     T* tmp = (T*)malloc(sizeof(T)*osize[W_INDEX]);
 
