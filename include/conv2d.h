@@ -41,13 +41,13 @@ void im2col(
                     }
                     if(padding[P_LEFT] >0 && j < kmiddle_j){
                         memcpy(tmp+ki*kshape[W_INDEX]+padding[P_LEFT], 
-                                input+c*ishape[H_INDEX]*ishape[W_INDEX]+i*ishape[W_INDEX] + j - kmiddle_j + padding[P_LEFT],
+                                input+c*ishape[H_INDEX]*ishape[W_INDEX]+(i+ki-kmiddle_i)*ishape[W_INDEX] + j - kmiddle_j + padding[P_LEFT],
                                 sizeof(T)*(kshape[W_INDEX] - padding[P_LEFT]));
                         continue;
                     }
                     if(j+stride[S_HORIZONTAL] >= ishape[W_INDEX] - kmiddle_j + padding[P_RIGHT]){
                         memcpy(tmp+ki*kshape[W_INDEX],
-                          input+c*ishape[H_INDEX]*ishape[W_INDEX]+i*ishape[W_INDEX] + j - kmiddle_j,
+                          input+c*ishape[H_INDEX]*ishape[W_INDEX]+(i+ki-kmiddle_i)*ishape[W_INDEX] + j - kmiddle_j,
                           sizeof(T)*(kshape[W_INDEX]-padding[P_RIGHT]));
                         continue;
                     }
@@ -55,7 +55,7 @@ void im2col(
                         continue;
                     }
                     memcpy(tmp+ki*kshape[W_INDEX],
-                          input+c*ishape[H_INDEX]*ishape[W_INDEX]+i*ishape[W_INDEX] + j - kmiddle_j,
+                          input+c*ishape[H_INDEX]*ishape[W_INDEX]+(i+ki-kmiddle_i)*ishape[W_INDEX] + j - kmiddle_j,
                           sizeof(T)*kshape[W_INDEX]);
                 }
                 memcpy(out+oline*osize[W_INDEX], tmp, sizeof(T)*osize[W_INDEX]);
