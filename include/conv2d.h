@@ -30,8 +30,7 @@ void im2col(
 
     T* tmp = (T*)malloc(sizeof(T)*osize[W_INDEX]);
 
-
-    for(int c = 0; c < ishape[C_INDEX]; c++){
+    for(int c = 1; c < ishape[C_INDEX]+1; c++){
         for(int i = offset_i; i<ishape[H_INDEX] - kmiddle_i + padding[P_BOTTOM]; i += stride[S_VERTICAL]){
             for(int j = offset_j; j<ishape[W_INDEX] - kmiddle_j + padding[P_RIGHT]; j+=stride[S_HORIZONTAL]){
                 memset(tmp,0,sizeof(T)*osize[W_INDEX]);
@@ -55,7 +54,8 @@ void im2col(
                     //     continue;
                     // }
                     memcpy(tmp+ki*kshape[W_INDEX],
-                          input+c*ishape[H_INDEX]*ishape[W_INDEX]+(i+ki-kmiddle_i)*ishape[W_INDEX] + j - kmiddle_j,
+                          input + (c-1)*ishape[H_INDEX]*ishape[W_INDEX] +
+                          (i+ki-kmiddle_i)*ishape[W_INDEX] + j - kmiddle_j,
                           sizeof(T)*kshape[W_INDEX]);
                 }
                 memcpy(out+oline*osize[W_INDEX], tmp, sizeof(T)*osize[W_INDEX]);

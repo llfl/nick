@@ -18,8 +18,8 @@ namespace{
             {6,7,8,6,8,1,-6,7,1,0,0,0}
         };
         int16_t *cc = (int16_t *)c;
-        int ishape[3] = {4,4,0};
-        int kshape[3] = {3,3,0};
+        int ishape[3] = {4,4,1};
+        int kshape[3] = {3,3,1};
         int padding[4] = {0,0,0,0};
         int stride[2] = {1,1};
         int osize[2] = {4,12};
