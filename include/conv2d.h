@@ -51,7 +51,7 @@ void im2col(
                           sizeof(T)*(kshape[W_INDEX]-padding[P_RIGHT]));
                         continue;
                     }
-                    if(i+ ki + stride[S_VERTICAL] >= ishape[H_INDEX] + padding[P_BOTTOM]){
+                    if(padding[P_BOTTOM] >0 && i+ ki + stride[S_VERTICAL] >= ishape[H_INDEX] + padding[P_BOTTOM]){
                         continue;
                     }
                     memcpy(tmp+ki*kshape[W_INDEX],
