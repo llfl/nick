@@ -63,8 +63,40 @@ void im2col(
             }
         }
     }
-
     free(tmp);
+}
+
+template <typename T>
+void conv2d(
+    const T *input,
+    const T *kernel,
+        int *ishape,
+        int *kshape,
+        int *padding,
+        int *stride,
+        int *oshape,
+        T   *out
+){
+    //kernel and output channel must padding to multiple of 4
+
+    int col_size[2];
+    int ksize[2];
+    col_size[W_INDEX] = oshape[W_INDEX] + (4 - (oshape[W_INDEX] & 3)) % 4;
+    col_size[H_INDEX] = oshape[H_INDEX] + (4 - (oshape[H_INDEX] & 3)) % 4;
+
+    ksize[W_INDEX] = kshape[C_INDEX] + (4 - (kshape[C_INDEX] & 3)) % 4;
+    ksize[H_INDEX] = kshape[H_INDEX] * kshape[W_INDEX] + (4 - ((kshape[H_INDEX] * kshape[W_INDEX]) & 3)) % 4;
+
+    T* col = (T*) malloc(sizeof(T)*col_size[W_INDEX]*col_size[H_INDEX]*oshape[C_INDEX]);
+    T* ocol = (T*) malloc(sizeof(T) * col_size[H_INDEX] * ksize[W_INDEX]);
+    memset(ocol, 0, sizeof(T) * col_size[H_INDEX] * ksize[W_INDEX]);
+    im2col(input, ishape, kshape, padding, stride, col_size, col);
+    for(int c = 1; c < ishape[C_INDEX]+1; c++){
+        vgemm(col+(c-1)*col_size[W_INDEX]*col_size[H_INDEX], kernel, col_size, ksize, ocol);
+    }
+
+
+
 }
 
 #endif
