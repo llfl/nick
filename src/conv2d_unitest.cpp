@@ -21,7 +21,7 @@ namespace{
         int ishape[3] = {4,4,1};
         int kshape[3] = {3,3,1};
         int padding[4] = {0,0,0,0};
-        int stride[2] = {0,0};
+        int stride[2] = {1,1};
         int osize[2] = {4,12};
         int16_t *r = (int16_t*)malloc(sizeof(int16_t)*osize[H_INDEX]*osize[W_INDEX]);
         im2col<int16_t>((int16_t *)aa,ishape,kshape,padding,stride,osize,r);
