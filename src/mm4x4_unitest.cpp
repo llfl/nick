@@ -1,7 +1,6 @@
 #include "unitest.h"
 #include "mm4x4.h"
 
-
 namespace 
 {
     int16_t aa[4][4] = {
