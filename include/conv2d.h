@@ -31,11 +31,14 @@ void im2col(
     T* tmp = (T*)malloc(sizeof(T)*osize[W_INDEX]);
 
     for(int c = 1; c < ishape[C_INDEX]+1; c++){
-        for(int i = offset_i; i<ishape[H_INDEX] - kmiddle_i + padding[P_BOTTOM]; i += stride[S_VERTICAL]){
-            for(int j = offset_j; j<ishape[W_INDEX] - kmiddle_j + padding[P_RIGHT]; j+=stride[S_HORIZONTAL]){
+        for(int i = offset_i; i < ishape[H_INDEX] - kmiddle_i + padding[P_BOTTOM]; i+=stride[S_VERTICAL]){
+            for(int j = offset_j; j < ishape[W_INDEX] - kmiddle_j + padding[P_RIGHT]; j+=stride[S_HORIZONTAL]){
                 memset(tmp,0,sizeof(T)*osize[W_INDEX]);
                 for(int ki = 0; ki<kshape[H_INDEX]; ki++){
                     if(i + ki < kmiddle_i){
+                        continue;
+                    }
+                    if(padding[P_BOTTOM] > 0 && i + ki - kmiddle_i + stride[S_VERTICAL] >= ishape[H_INDEX] + padding[P_BOTTOM]){
                         continue;
                     }
                     if(padding[P_LEFT] >0 && j < kmiddle_j){
@@ -48,9 +51,6 @@ void im2col(
                         memcpy(tmp+ki*kshape[W_INDEX],
                           input+(c-1)*ishape[H_INDEX]*ishape[W_INDEX]+(i+ki-kmiddle_i)*ishape[W_INDEX] + j - kmiddle_j,
                           sizeof(T)*(kshape[W_INDEX]-padding[P_RIGHT]));
-                        continue;
-                    }
-                    if(padding[P_BOTTOM] >0 && i+ ki + stride[S_VERTICAL] >= ishape[H_INDEX] + padding[P_BOTTOM]){
                         continue;
                     }
                     memcpy(tmp+ki*kshape[W_INDEX],
