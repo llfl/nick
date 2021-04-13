@@ -94,7 +94,7 @@ void conv2d(
     for(int c = 1; c < ishape[C_INDEX]+1; c++){
         vgemm(col+(c-1)*col_size[W_INDEX]*col_size[H_INDEX], kernel, col_size, ksize, ocol);
     }
-
+    memcpy(out,ocol,sizeof(T)*oshape[W_INDEX]*oshape[H_INDEX]*oshape[C_INDEX]);
 }
 
 #endif
