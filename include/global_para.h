@@ -5,6 +5,7 @@
 #define H_INDEX 0
 #define W_INDEX 1
 #define C_INDEX 2
+#define CI_INDEX 3
 
 //padding 
 #define P_TOP    0

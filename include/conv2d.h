@@ -2,6 +2,7 @@
 #define CONV2D_H_
 
 #include "global_para.h"
+#include "gemm.h"
 #include<stdlib.h>
 #include<string.h>
 
@@ -9,21 +10,21 @@ template <typename T>
 void im2col(
     const T *input,
         int *ishape,
-        int *kshape,
+        int *ksize,
         int *padding,
         int *stride,
         int *osize,
         T   *out
 ){
-    //padding[P_TOP] < kshape[H_INDEX]/2 
-    //padding[P_BOTTOM] < kshape[H_INDEX]/2
-    //padding[P_LEFT] < kshape[W_INDEX]/2
-    //padding[P_RIGHT] < kshape[W_INDEX]/2
+    //padding[P_TOP] < ksize[H_INDEX]/2 
+    //padding[P_BOTTOM] < ksize[H_INDEX]/2
+    //padding[P_LEFT] < ksize[W_INDEX]/2
+    //padding[P_RIGHT] < ksize[W_INDEX]/2
     //make sure kernel center inside image
 
     //kernel center index
-    int kmiddle_i = kshape[H_INDEX] / 2;
-    int kmiddle_j = kshape[W_INDEX] / 2;
+    int kmiddle_i = ksize[H_INDEX] / 2;
+    int kmiddle_j = ksize[W_INDEX] / 2;
     int offset_i = kmiddle_i - padding[P_TOP];
     int offset_j = kmiddle_j - padding[P_RIGHT];
     int oline = 0;
@@ -34,7 +35,7 @@ void im2col(
         for(int i = offset_i; i < ishape[H_INDEX] - kmiddle_i + padding[P_BOTTOM]; i+=stride[S_VERTICAL]){
             for(int j = offset_j; j < ishape[W_INDEX] - kmiddle_j + padding[P_RIGHT]; j+=stride[S_HORIZONTAL]){
                 memset(tmp,0,sizeof(T)*osize[W_INDEX]);
-                for(int ki = 0; ki<kshape[H_INDEX]; ki++){
+                for(int ki = 0; ki<ksize[H_INDEX]; ki++){
                     if(i + ki < kmiddle_i){
                         continue;
                     }
@@ -42,21 +43,21 @@ void im2col(
                         continue;
                     }
                     if(padding[P_LEFT] >0 && j < kmiddle_j){
-                        memcpy(tmp+ki*kshape[W_INDEX]+padding[P_LEFT], 
+                        memcpy(tmp+ki*ksize[W_INDEX]+padding[P_LEFT], 
                                 input+(c-1)*ishape[H_INDEX]*ishape[W_INDEX]+(i+ki-kmiddle_i)*ishape[W_INDEX] + j - kmiddle_j + padding[P_LEFT],
-                                sizeof(T)*(kshape[W_INDEX] - padding[P_LEFT]));
+                                sizeof(T)*(ksize[W_INDEX] - padding[P_LEFT]));
                         continue;
                     }
                     if(j+stride[S_HORIZONTAL] >= ishape[W_INDEX] - kmiddle_j + padding[P_RIGHT]){
-                        memcpy(tmp+ki*kshape[W_INDEX],
+                        memcpy(tmp+ki*ksize[W_INDEX],
                           input+(c-1)*ishape[H_INDEX]*ishape[W_INDEX]+(i+ki-kmiddle_i)*ishape[W_INDEX] + j - kmiddle_j,
-                          sizeof(T)*(kshape[W_INDEX]-padding[P_RIGHT]));
+                          sizeof(T)*(ksize[W_INDEX]-padding[P_RIGHT]));
                         continue;
                     }
-                    memcpy(tmp+ki*kshape[W_INDEX],
+                    memcpy(tmp+ki*ksize[W_INDEX],
                           input + (c-1)*ishape[H_INDEX]*ishape[W_INDEX] +
                           (i+ki-kmiddle_i)*ishape[W_INDEX] + j - kmiddle_j,
-                          sizeof(T)*kshape[W_INDEX]);
+                          sizeof(T)*ksize[W_INDEX]);
                 }
                 memcpy(out+oline*osize[W_INDEX], tmp, sizeof(T)*osize[W_INDEX]);
                 oline ++;
@@ -92,7 +93,7 @@ void conv2d(
     memset(ocol, 0, sizeof(T) * col_size[H_INDEX] * ksize[W_INDEX]);
     im2col(input, ishape, kshape, padding, stride, col_size, col);
     for(int c = 1; c < ishape[C_INDEX]+1; c++){
-        vgemm(col+(c-1)*col_size[W_INDEX]*col_size[H_INDEX], kernel, col_size, ksize, ocol);
+        vgemm(col+(c-1)*col_size[W_INDEX]*col_size[H_INDEX], kernel+(c-1)*ksize[W_INDEX]*ksize[H_INDEX], col_size, ksize, ocol);
     }
     memcpy(out,ocol,sizeof(T)*oshape[W_INDEX]*oshape[H_INDEX]*oshape[C_INDEX]);
 }

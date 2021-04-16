@@ -16,7 +16,7 @@ namespace {
             {5,6,7,3,6,8,2,-6,7,0,0,0},
             {6,7,8,6,8,1,-6,7,1,0,0,0}
         };
-        int16_t *cc = (int16_t *)c;
+
         int ishape[3] = {4,4,1};
         int kshape[3] = {3,3,1};
         int padding[4] = {0,0,0,0};
@@ -24,7 +24,7 @@ namespace {
         int osize[2] = {4,12};
         int16_t *r = (int16_t*)malloc(sizeof(int16_t)*osize[H_INDEX]*osize[W_INDEX]);
         im2col<int16_t>((int16_t *)aa,ishape,kshape,padding,stride,osize,r);
-        TestMatrix<int16_t>(r,cc,osize);
+        TestMatrix<int16_t>(r,(int16_t *)c,osize);
         free(r);
     }
 
@@ -50,7 +50,6 @@ namespace {
             {5,6,7,3,6,8,2,-6,7,0,0,0},
             {6,7,8,6,8,1,-6,7,1,0,0,0}
         };
-        int16_t *cc = (int16_t *)c;
         int ishape[3] = {4,4,2};
         int kshape[3] = {3,3,1};
         int padding[4] = {0,0,0,0};
@@ -58,7 +57,7 @@ namespace {
         int osize[2] = {8,12};
         int16_t *r = (int16_t*)malloc(sizeof(int16_t)*osize[H_INDEX]*osize[W_INDEX]);
         im2col<int16_t>((int16_t *)aa,ishape,kshape,padding,stride,osize,r);
-        TestMatrix<int16_t>(r,cc,osize);
+        TestMatrix<int16_t>(r,(int16_t *)c,osize);
         free(r);
     }
 
@@ -87,7 +86,6 @@ namespace {
             {6,8,1,-6,7,1,0,0,0,0,0,0},
             {8,1,0,7,1,0,0,0,0,0,0,0}
         };
-        int16_t *cc = (int16_t *)c;
         int ishape[3] = {4,4,1};
         int kshape[3] = {3,3,1};
         int padding[4] = {1,1,1,1};
@@ -95,7 +93,7 @@ namespace {
         int osize[2] = {16,12};
         int16_t *r = (int16_t*)malloc(sizeof(int16_t)*osize[H_INDEX]*osize[W_INDEX]);
         im2col<int16_t>((int16_t *)aa,ishape,kshape,padding,stride,osize,r);
-        TestMatrix<int16_t>(r,cc,osize);
+        TestMatrix<int16_t>(r,(int16_t *)c,osize);
         free(r);
     }
 
@@ -145,7 +143,6 @@ namespace {
             {6,8,1,-6,7,1,0,0,0,0,0,0},
             {8,1,0,7,1,0,0,0,0,0,0,0}
         };
-        int16_t *cc = (int16_t *)c;
         int ishape[3] = {4,4,3};
         int kshape[3] = {3,3,1};
         int padding[4] = {1,1,1,1};
@@ -153,7 +150,34 @@ namespace {
         int osize[2] = {32,12};
         int16_t *r = (int16_t*)malloc(sizeof(int16_t)*osize[H_INDEX]*osize[W_INDEX]);
         im2col<int16_t>((int16_t *)aa,ishape,kshape,padding,stride,osize,r);
-        TestMatrix<int16_t>(r,cc,osize);
+        TestMatrix<int16_t>(r,(int16_t *)c,osize);
+        free(r);
+    }
+
+    TEST(conv2d_conv2d, nopadding){
+        int16_t input[4][4] = {
+            {1, 2, -3, 4},
+            {5, 6, 7, 8},
+            {3, 6, 8, 1},
+            {2, -6, 7, 1}
+        };
+        int16_t kernel[3][3] = {
+            {1, 1, 1},
+            {1, 1, 1},
+            {1, 1, 1}
+        };
+        int16_t out[2][2] = {
+            {35, 39},
+            {38, 38}
+        };
+        int ishape[3] = {4,4,1};
+        int kshape[4] = {3,3,1,1};
+        int padding[4] = {0,0,0,0};
+        int stride[2] = {1,1};
+        int oshape[3] = {2,2,1};
+        int16_t *r = (int16_t*)malloc(sizeof(int16_t)*oshape[H_INDEX]*oshape[W_INDEX]);
+        conv2d<int16_t>((int16_t *)input, (int16_t *)kernel, ishape, kshape, padding, stride, oshape, r);
+        TestMatrix<int16_t>(r,(int16_t *)out,oshape);
         free(r);
     }
 }
