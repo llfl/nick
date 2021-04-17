@@ -154,6 +154,70 @@ namespace {
         free(r);
     }
 
+    TEST(conv2d_k2img, 3x3){
+
+        int16_t kernel[3][3] = {
+            {1, 2, -3},
+            {5, 6, 7},
+            {3, 6, 8},
+        };
+        int16_t out[12][4] = {
+            {1,0,0,0},
+            {2,0,0,0},
+            {-3,0,0,0},
+            {5,0,0,0},
+            {6,0,0,0},
+            {7,0,0,0},
+            {3,0,0,0},
+            {6,0,0,0},
+            {8,0,0,0},
+            {0,0,0,0},
+            {0,0,0,0},
+            {0,0,0,0},
+        };
+        int kshape[4] = {3,3,1,1};
+        int osize[2] = {12,4};
+        int16_t *r = (int16_t*)malloc(sizeof(int16_t)*osize[H_INDEX]*osize[W_INDEX]);
+        memset(r,0,sizeof(int16_t)*osize[H_INDEX]*osize[W_INDEX]);
+        k2col<int16_t>((int16_t *)kernel, kshape, osize, r);
+        TestMatrix<int16_t>(r,(int16_t *)out,osize);
+        free(r);
+    }
+
+    TEST(conv2d_k2img, 3x3x2x1){
+        
+        int16_t kernel[2][3][3] = {{
+            {1, 2, -3},
+            {5, 6, 7},
+            {3, 6, 8},
+        },{
+            {1, 2, -3},
+            {5, 6, 7},
+            {3, 6, 8},
+        }};
+        int16_t out[12][4] = {
+            {1 ,1 ,0,0},
+            {2 ,2 ,0,0},
+            {-3,-3,0,0},
+            {5 ,5 ,0,0},
+            {6 ,6 ,0,0},
+            {7 ,7 ,0,0},
+            {3 ,3 ,0,0},
+            {6 ,6 ,0,0},
+            {8 ,8 ,0,0},
+            {0 ,0 ,0,0},
+            {0 ,0 ,0,0},
+            {0 ,0 ,0,0},
+        };
+        int kshape[4] = {3,3,2,1};
+        int osize[2] = {12,4};
+        int16_t *r = (int16_t*)malloc(sizeof(int16_t)*osize[H_INDEX]*osize[W_INDEX]);
+        memset(r,0,sizeof(int16_t)*osize[H_INDEX]*osize[W_INDEX]);
+        k2col<int16_t>((int16_t *)kernel, kshape, osize, r);
+        TestMatrix<int16_t>(r,(int16_t *)out,osize);
+        free(r);
+    }
+
     TEST(conv2d_conv2d, nopadding){
         int16_t input[4][4] = {
             {1, 2, -3, 4},

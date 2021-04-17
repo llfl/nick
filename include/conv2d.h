@@ -67,6 +67,26 @@ void im2col(
     free(tmp);
 }
 
+
+template <typename T>
+void k2col(
+    const T *kernel,
+        int *kshape,
+        int *ksize,
+          T *out
+){
+    T* tmp = (T*)malloc(sizeof(T)*ksize[W_INDEX]);
+    for(int i = 0; i < kshape[W_INDEX]*kshape[H_INDEX]; i++){
+        memset(tmp,0,sizeof(T)*ksize[W_INDEX]);
+        for(int c = 1; c < kshape[C_INDEX]+1; c++){
+            tmp[c-1] = kernel[i + (c-1)*kshape[W_INDEX]*kshape[H_INDEX]];
+        }
+        memcpy(out+i*ksize[W_INDEX], tmp, sizeof(T)*ksize[W_INDEX]);
+    }
+    free(tmp);
+}
+
+
 template <typename T>
 void conv2d(
     const T *input,
@@ -76,26 +96,49 @@ void conv2d(
         int *padding,
         int *stride,
         int *oshape,
-        T   *out
+          T *out
 ){
     //kernel and output channel must padding to multiple of 4
 
-    int col_size[2];
+    int isize[2];
     int ksize[2];
-    col_size[W_INDEX] = oshape[W_INDEX] + (4 - (oshape[W_INDEX] & 3)) % 4;
-    col_size[H_INDEX] = oshape[H_INDEX] + (4 - (oshape[H_INDEX] & 3)) % 4;
 
     ksize[W_INDEX] = kshape[C_INDEX] + (4 - (kshape[C_INDEX] & 3)) % 4;
-    ksize[H_INDEX] = kshape[H_INDEX] * kshape[W_INDEX] + (4 - ((kshape[H_INDEX] * kshape[W_INDEX]) & 3)) % 4;
+    ksize[H_INDEX] = kshape[H_INDEX] * kshape[W_INDEX] + 
+        (4 - ((kshape[H_INDEX] * kshape[W_INDEX]) & 3)) % 4;
 
-    T* col = (T*) malloc(sizeof(T)*col_size[W_INDEX]*col_size[H_INDEX]*oshape[C_INDEX]);
-    T* ocol = (T*) malloc(sizeof(T) * col_size[H_INDEX] * ksize[W_INDEX]);
-    memset(ocol, 0, sizeof(T) * col_size[H_INDEX] * ksize[W_INDEX]);
-    im2col(input, ishape, kshape, padding, stride, col_size, col);
+    isize[W_INDEX] = ksize[H_INDEX];
+    isize[H_INDEX] = oshape[H_INDEX] + (4 - (oshape[H_INDEX] & 3)) % 4;
+
+    T* col = (T*) malloc(sizeof(T)*
+        isize[W_INDEX]*isize[H_INDEX]*oshape[C_INDEX]);
+
+    T* kcol = (T*) malloc(sizeof(T)*ksize[W_INDEX]*ksize[H_INDEX]);
+
+    T* outcol = (T*) malloc(sizeof(T)*isize[H_INDEX]*ksize[W_INDEX]);
+    memset(kcol, 0, sizeof(T)*isize[H_INDEX]*ksize[W_INDEX]);
+    memset(col, 0, isize[W_INDEX]*isize[H_INDEX]*oshape[C_INDEX]);
+    im2col(input, ishape, kshape, padding, stride, isize, col);
+
     for(int c = 1; c < ishape[C_INDEX]+1; c++){
-        vgemm(col+(c-1)*col_size[W_INDEX]*col_size[H_INDEX], kernel+(c-1)*ksize[W_INDEX]*ksize[H_INDEX], col_size, ksize, ocol);
+        
+        memset(outcol, 0, isize[W_INDEX]*isize[H_INDEX]*oshape[C_INDEX]);
+        k2col(kernel + 
+            (c-1) * kshape[H_INDEX] * kshape[W_INDEX] * kshape[C_INDEX],
+            kshape, ksize, kcol);
+        vgemm(col+(c-1)*isize[W_INDEX]*isize[H_INDEX], kcol, isize, ksize, outcol);
     }
-    memcpy(out,ocol,sizeof(T)*oshape[W_INDEX]*oshape[H_INDEX]*oshape[C_INDEX]);
+
+    // col2im
+    for(int c = 1; c < oshape[C_INDEX]+1; c++){
+        for(int i = 0; i < oshape[H_INDEX]*oshape[W_INDEX]; i++){
+            out[(c-1)*oshape[H_INDEX]*oshape[W_INDEX] + i] =
+                outcol[i*ksize[W_INDEX]+(c-1)];
+        }
+    }
+    free(outcol);
+    free(kcol);
+    free(col);
 }
 
 #endif

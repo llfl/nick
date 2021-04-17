@@ -216,4 +216,26 @@ namespace {
         TestMatrix<int16_t>(res,ref,size);
     }
 
+    TEST(vgemmTest, rand_4x8_8x4){
+        int asize[2] = {4,8};
+        int bsize[2] = {8,4};
+        int size[2] = {4,4};
+        int16_t *a = matrix<int16_t>(asize);
+        int16_t *b = matrix<int16_t>(bsize);
+        int16_t *res = (int16_t *)malloc(sizeof(int16_t)*size[0]*size[1]);
+        vgemm<int16_t>(a,b,asize,bsize,res);
+        int16_t *ref = mm<int16_t>(a,b,asize,bsize);
+        TestMatrix<int16_t>(res,ref,size);
+    }
+
+    TEST(vgemmTest, rand_8x8_8x8){
+        int size[2] = {8,8};
+        int16_t *a = matrix<int16_t>(size);
+        int16_t *b = matrix<int16_t>(size);
+        int16_t *res = (int16_t *)malloc(sizeof(int16_t)*size[0]*size[1]);
+        vgemm<int16_t>(a,b,size,size,res);
+        int16_t *ref = mm<int16_t>(a,b,size,size);
+        TestMatrix<int16_t>(res,ref,size);
+    }
+
 } 
