@@ -108,7 +108,8 @@ void conv2d(
         (4 - ((kshape[H_INDEX] * kshape[W_INDEX]) & 3)) % 4;
 
     isize[W_INDEX] = ksize[H_INDEX];
-    isize[H_INDEX] = oshape[H_INDEX] + (4 - (oshape[H_INDEX] & 3)) % 4;
+    isize[H_INDEX] = oshape[H_INDEX]*oshape[W_INDEX] +\
+        (4 - (oshape[H_INDEX]*oshape[W_INDEX] & 3)) % 4;
 
     T* col = (T*) malloc(sizeof(T)*
         isize[W_INDEX]*isize[H_INDEX]*oshape[C_INDEX]);
@@ -116,13 +117,12 @@ void conv2d(
     T* kcol = (T*) malloc(sizeof(T)*ksize[W_INDEX]*ksize[H_INDEX]);
 
     T* outcol = (T*) malloc(sizeof(T)*isize[H_INDEX]*ksize[W_INDEX]);
-    memset(kcol, 0, sizeof(T)*isize[H_INDEX]*ksize[W_INDEX]);
+
     memset(col, 0, isize[W_INDEX]*isize[H_INDEX]*oshape[C_INDEX]);
     im2col(input, ishape, kshape, padding, stride, isize, col);
-
+    memset(outcol, 0, isize[W_INDEX]*isize[H_INDEX]*oshape[C_INDEX]);
     for(int c = 1; c < ishape[C_INDEX]+1; c++){
-        
-        memset(outcol, 0, isize[W_INDEX]*isize[H_INDEX]*oshape[C_INDEX]);
+        memset(kcol, 0, sizeof(T)*isize[H_INDEX]*ksize[W_INDEX]);
         k2col(kernel + 
             (c-1) * kshape[H_INDEX] * kshape[W_INDEX] * kshape[C_INDEX],
             kshape, ksize, kcol);

@@ -244,4 +244,69 @@ namespace {
         TestMatrix<int16_t>(r,(int16_t *)out,oshape);
         free(r);
     }
+
+    TEST(conv2d_conv2d, padding1_1_1_1){
+        int16_t input[4][4] = {
+            {1, 2, -3, 4},
+            {5, 6, 7, 8},
+            {3, 6, 8, 1},
+            {2, -6, 7, 1}
+        };
+        int16_t kernel[3][3] = {
+            {1, 1, 1},
+            {1, 1, 1},
+            {1, 1, 1}
+        };
+        int16_t out[4][4] = {
+            {14, 18, 24, 16},
+            {23, 35, 39, 29},
+            {16, 38, 38, 32},
+            { 5, 20, 17, 17}
+        };
+        int ishape[3] = {4,4,1};
+        int kshape[4] = {3,3,1,1};
+        int padding[4] = {1,1,1,1};
+        int stride[2] = {1,1};
+        int oshape[3] = {4,4,1};
+        int16_t *r = (int16_t*)malloc(sizeof(int16_t)*oshape[H_INDEX]*oshape[W_INDEX]);
+        conv2d<int16_t>((int16_t *)input, (int16_t *)kernel, ishape, kshape, padding, stride, oshape, r);
+        TestMatrix<int16_t>(r,(int16_t *)out,oshape);
+        free(r);
+    }
+
+    // TEST(conv2d_conv2d, 2x3x3x1){
+    //     int16_t input[2*4*4] = {
+    //             1, 2, -3, 4,
+    //             5, 6, 7, 8,
+    //             3, 6, 8, 1,
+    //             2, -6, 7, 1,
+
+    //             1, 2, -3, 4,
+    //             5, 6, 7, 8,
+    //             3, 6, 8, 1,
+    //             2, -6, 7, 1};
+    //     int16_t kernel[2*3*3] = {
+    //             1, 1, 1,
+    //             1, 1, 1,
+    //             1, 1, 1,
+
+    //             2, 2, 2,
+    //             2, 2, 2,
+    //             2, 2, 2};
+    //     int16_t out[4][4] = {
+    //         {42, 54, 72, 48},
+    //         {69, 105, 117, 87},
+    //         {48, 114, 114, 96},
+    //         { 15, 60, 51, 51}
+    //     };
+    //     int ishape[3] = {4,4,2};
+    //     int kshape[4] = {3,3,1,2};
+    //     int padding[4] = {1,1,1,1};
+    //     int stride[2] = {1,1};
+    //     int oshape[3] = {4,4,1};
+    //     int16_t *r = (int16_t*)malloc(sizeof(int16_t)*oshape[H_INDEX]*oshape[W_INDEX]);
+    //     conv2d<int16_t>((int16_t *)input, (int16_t *)kernel, ishape, kshape, padding, stride, oshape, r);
+    //     TestMatrix<int16_t>(r,(int16_t *)out,oshape);
+    //     free(r);
+    // }
 }
