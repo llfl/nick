@@ -269,6 +269,7 @@ namespace {
         int stride[2] = {1,1};
         int oshape[3] = {4,4,1};
         int16_t *r = (int16_t*)malloc(sizeof(int16_t)*oshape[H_INDEX]*oshape[W_INDEX]);
+        // int16_t *r = new int16_t[oshape[H_INDEX]*oshape[W_INDEX]];
         conv2d<int16_t>((int16_t *)input, (int16_t *)kernel, ishape, kshape, padding, stride, oshape, r);
         TestMatrix<int16_t>(r,(int16_t *)out,oshape);
         free(r);

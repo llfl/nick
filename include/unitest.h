@@ -3,9 +3,9 @@
 
 template <typename T>
 void TestMatrix(
-    T *a,
-    T *b,
-  int *size
+    const T *a,
+    const T *b,
+        int *size
 ){
     for(int i = 0; i < size[0]; i++) {
         for(int j = 0; j < size[1]; j++) {

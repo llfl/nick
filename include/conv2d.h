@@ -126,7 +126,8 @@ void conv2d(
         k2col(kernel + 
             (c-1) * kshape[H_INDEX] * kshape[W_INDEX] * kshape[C_INDEX],
             kshape, ksize, kcol);
-        vgemm(col+(c-1)*isize[W_INDEX]*isize[H_INDEX], kcol, isize, ksize, outcol);
+        vgemm(col+(c-1)*isize[W_INDEX]*isize[H_INDEX], 
+            kcol, isize, ksize, outcol);
     }
 
     // col2im
@@ -134,6 +135,8 @@ void conv2d(
         for(int i = 0; i < oshape[H_INDEX]*oshape[W_INDEX]; i++){
             out[(c-1)*oshape[H_INDEX]*oshape[W_INDEX] + i] =
                 outcol[i*ksize[W_INDEX]+(c-1)];
+            // memcpy(out+(c-1)*oshape[H_INDEX]*oshape[W_INDEX] + i, 
+            //     outcol+i*ksize[W_INDEX]+(c-1), sizeof(T));
         }
     }
     free(outcol);
